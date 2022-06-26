@@ -7,10 +7,10 @@ net = nn.Sequential(
     nn.Flatten(),
     nn.Linear(784, 256),
     nn.ReLU(),
-    nn.Dropout(0.5),
+    nn.Dropout(0.2),
     nn.Linear(256, 256),
     nn.ReLU(),
-    nn.Dropout(0.7),
+    nn.Dropout(0.5),
     nn.Linear(256, 10)
 )
 
@@ -20,12 +20,14 @@ def init_weights(m):
 
 net.apply(init_weights)
 
-trainer = torch.optim.SGD(net.parameters(), lr=lr)
+lr, num_epochs, batch_siez = 0.5, 10, 256
 
-lr, num_epochs, batch_siez = 0.01, 10, 256
+trainer = torch.optim.SGD(net.parameters(), lr=lr)
 
 loss = nn.CrossEntropyLoss()
 
 train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size=batch_siez)
 
 d2l.train_ch3(net, train_iter, test_iter, loss, num_epochs, trainer)
+
+d2l.plt.show()
