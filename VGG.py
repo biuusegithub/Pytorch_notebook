@@ -3,6 +3,12 @@ import torch
 from torch import nn
 from d2l import torch as d2l
 
+'''
+VGG架构: 
+        多个VGG块后接全连接层
+        不同次数的重复块得到不同的架构，如VGG-16、VGG-19
+'''
+
 
 '''VGG块'''
 def vgg_block(num_convs, in_channels, out_channels):
