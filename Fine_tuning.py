@@ -5,6 +5,7 @@ from torch import nn
 from d2l import torch as d2l
 
 
+'''这里使用二分类热狗进行实验'''
 d2l.DATA_HUB['hotdog'] = (d2l.DATA_URL + 'hotdog.zip', 'fba480ffa8aa7e0febbb511d181409f899b9baa5')
 data_dir = d2l.download_extract('hotdog')
 
