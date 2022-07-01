@@ -45,7 +45,7 @@ print(pretrained_net.fc)
 
 
 finetune_net = torchvision.models.resnet18(pretrained=True)
-finetune_net.fc = nn.Linear(finetune_net.fc.in_features, 2)
+finetune_net.fc = nn.Linear(finetune_net.fc.in_features, 2)    # 替换最后的全连接层
 nn.init.xavier_uniform_(finetune_net.fc.weight)
 
 
@@ -69,7 +69,7 @@ def train_fine_tuning(net, learning_rate, batch_size=64, num_epochs=2, param_gro
     if param_group:
         params_1x = [param for name, param in net.named_parameters()
              if name not in ["fc.weight", "fc.bias"]]
-        '''如果不是最后一层全连接层的参数和偏移, 则拉大lr至原来的10倍'''     
+        '''如果不是最后全连接层的参数和偏移, 则拉大lr至原来的10倍'''     
         trainer = torch.optim.SGD([{'params': params_1x},
                                    {'params': net.fc.parameters(),
                                     'lr': learning_rate * 10}],
