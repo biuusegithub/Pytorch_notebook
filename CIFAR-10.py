@@ -21,7 +21,6 @@ else:
     data_dir = '../data/cifar-10/'
 
 
-#@save
 def read_csv_labels(fname):
     """读取fname来给标签字典返回一个文件名"""
     with open(fname, 'r') as f:
