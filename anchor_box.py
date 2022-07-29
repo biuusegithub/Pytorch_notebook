@@ -281,9 +281,14 @@ def nms(boxes, scores, iou_threshold):
 
 
 '''预测边界框'''
-def multibox_detection(cls_probs, offset_preds, anchors, nms_threshold=0.5,
-                       pos_threshold=0.009999999):
+# cls_probs：预测的各个锚框的概率，一般要经过s o f t m a x softmaxsoftmax运算，形状为（批量大小，预测总类别数+1，锚框总数）
+# offset_preds: 预测的各个锚框的偏移量，一般形状为 （批量大小，锚框总数*4）
+# anchors：生成的默认锚框，一般形状为（1，锚框总数，4）
+# nms_threshold: 非极大值抑制的阈值
+# pos_threshold: 正类预测的阈值，当对某一个锚框预测的类别置信度大于设置的阈值时，会被当做正类锚框处理，否则视为负类
+def multibox_detection(cls_probs, offset_preds, anchors, nms_threshold=0.5, pos_threshold=0.009999999):
     """使用非极大值抑制来预测边界框"""
+
     device, batch_size = cls_probs.device, cls_probs.shape[0]
     anchors = anchors.squeeze(0)
     num_classes, num_anchors = cls_probs.shape[1], cls_probs.shape[2]
@@ -303,6 +308,7 @@ def multibox_detection(cls_probs, offset_preds, anchors, nms_threshold=0.5,
         class_id[non_keep] = -1
         class_id = class_id[all_id_sorted]
         conf, predicted_bb = conf[all_id_sorted], predicted_bb[all_id_sorted]
+       
         # pos_threshold是一个用于非背景预测的阈值
         below_min_idx = (conf < pos_threshold)
         class_id[below_min_idx] = -1
