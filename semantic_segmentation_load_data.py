@@ -150,14 +150,15 @@ for X, Y in train_iter:
 '''整合所有组件'''
 def load_data_voc(batch_size, crop_size):
     """加载VOC语义分割数据集"""
-    voc_dir = d2l.download_extract('voc2012', os.path.join(
-        'VOCdevkit', 'VOC2012'))
+    voc_dir = d2l.download_extract('voc2012', os.path.join('VOCdevkit', 'VOC2012'))
     num_workers = d2l.get_dataloader_workers()
+    
     train_iter = torch.utils.data.DataLoader(
         VOCSegDataset(True, crop_size, voc_dir), batch_size,
         shuffle=True, drop_last=True, num_workers=num_workers)
+    
     test_iter = torch.utils.data.DataLoader(
         VOCSegDataset(False, crop_size, voc_dir), batch_size,
         drop_last=True, num_workers=num_workers)
+    
     return train_iter, test_iter
-
